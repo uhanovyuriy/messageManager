@@ -20,7 +20,6 @@ public abstract class AbstractBaseEntity {
     protected Integer id;
 
     AbstractBaseEntity() {
-
     }
 
     public boolean isNew() {
@@ -31,7 +30,8 @@ public abstract class AbstractBaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        return Objects.equals(this, o);
+        AbstractBaseEntity that = (AbstractRegisteredBaseEntity) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
