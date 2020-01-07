@@ -65,7 +65,7 @@ public class CompanyServiceImplTest {
         Company actual = new Company(TestDataCompany.COMPANY_2);
         actual.setId(TestDataCompany.ID_2);
         actual.setAddress(TestDataCompany.ADDRESS_3);
-        service.update(actual);
+        service.update(actual, actual.getId());
         Company expected = service.findByEmail(TestDataCompany.EMAIL_2);
         Assert.assertNotNull(expected);
         Assert.assertEquals(expected,actual);

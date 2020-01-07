@@ -24,9 +24,19 @@ public class User extends AbstractNamedBaseEntity {
     public User() {
     }
 
-    public User(@NotBlank @Size(max = 100) @Email String email, Company company,
+    public User(User user) {
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.company = user.getCompany();
+        this.password = user.getPassword();
+        this.registered = user.getRegistered();
+        this.enabled = user.isEnabled();
+    }
+
+    public User(String name, @NotBlank @Size(max = 100) @Email String email, Company company,
                 @NotBlank @Size(min = 6, max = 50) String password,
                 @NotNull LocalDateTime registered, boolean enabled) {
+        this.name = name;
         this.email = email;
         this.company = company;
         this.password = password;
@@ -67,12 +77,11 @@ public class User extends AbstractNamedBaseEntity {
         if (!super.equals(o)) return false;
         User user = (User) o;
         return Objects.equals(email, user.email) &&
-                Objects.equals(company.id, user.company.id) &&
-                Objects.equals(password, user.password);
+                Objects.equals(company.id, user.company.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), email, company.id, password);
+        return Objects.hash(super.hashCode(), email, company.id);
     }
 }
