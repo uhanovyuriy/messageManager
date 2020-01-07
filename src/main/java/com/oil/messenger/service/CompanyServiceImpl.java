@@ -2,14 +2,15 @@ package com.oil.messenger.service;
 
 import com.oil.messenger.model.Company;
 import com.oil.messenger.repository.CompanyCrudRepository;
-import com.oil.messenger.util.NotFoundException;
+import com.oil.messenger.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.Optional;
+
+import static com.oil.messenger.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -30,28 +31,29 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Transactional
     @Override
-    public void update(Company company) {
+    public void update(Company company, int id) {
         Assert.notNull(company, "company must not by null");
-        repository.save(company);
+        checkNotFoundWithId(repository.save(company), id);
     }
 
     @Transactional
     @Override
     public void delete(int id) {
-        repository.deleteById(id);
+        checkNotFoundWithId(repository.deleteById(id), id);
     }
 
     @Override
     public Company findByEmail(String email) {
         Assert.notNull(email, "email must not by null");
-        Optional<Company> optional = repository.findByEmail(email);
-        return optional.orElseThrow(() -> new NotFoundException("Company with email - " + email + ", not found"));
+        return repository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Company with email: " + email + ", not found"));
     }
 
 
     @Override
     public Company findById(int id) {
-        return repository.getOne(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Company with id: " + id + ", not found"));
     }
 
     @Override
