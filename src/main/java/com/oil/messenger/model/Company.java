@@ -4,15 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,19 +15,14 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class Company extends AbstractRegisteredBaseEntity {
+public class Company extends AbstractNamedBaseEntity {
 
     public Company() {
     }
 
-    public Company(String address) {
-        this.address = address;
-    }
-
-    public Company(@NotBlank @Size(min = 2, max = 100) String name, @NotBlank @Size(max = 100) @Email String email,
-                   @NotBlank @Size(min = 6, max = 50) String password, @NotNull LocalDateTime registered,
-                   boolean enabled, String address) {
-        super(name, email, password, registered, enabled);
+    public Company(String name, @Email String email, String address) {
+        super.name = name;
+        this.email = email;
         this.address = address;
     }
 
@@ -40,14 +30,20 @@ public class Company extends AbstractRegisteredBaseEntity {
         this.id = company.getId();
         this.name = company.getName();
         this.email = company.getEmail();
-        this.password = company.getPassword();
-        this.registered = company.getRegistered();
-        this.enabled = company.isEnabled();
         this.address = company.getAddress();
     }
 
+    @Size(max = 100)
+    @Email
+    @Column(name = "email")
+    private String email;
+
+    @Size(max = 200)
     @Column(name = "address")
     private String address;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "company")
+    private List<User> users;
 
     @Override
     public boolean equals(Object o) {
@@ -55,11 +51,12 @@ public class Company extends AbstractRegisteredBaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Company company = (Company) o;
-        return Objects.equals(address, company.address);
+        return Objects.equals(email, company.email) &&
+                Objects.equals(address, company.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), address);
+        return Objects.hash(super.hashCode(), email, address);
     }
 }

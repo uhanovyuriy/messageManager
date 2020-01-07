@@ -8,19 +8,6 @@ CREATE SEQUENCE GLOBAL_SEQ
   AS INTEGER
   START WITH 100000;
 
-CREATE TABLE companies
-(
-  id         INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-  name       VARCHAR(255)            NOT NULL,
-  email      VARCHAR(255)            NOT NULL,
-  address    VARCHAR(255)                    ,
-  password   VARCHAR(255)            NOT NULL,
-  registered TIMESTAMP DEFAULT now() NOT NULL,
-  enabled    BOOLEAN DEFAULT TRUE    NOT NULL
-);
-CREATE UNIQUE INDEX companies_unique_email_idx
-  ON companies (email);
-
 CREATE TABLE users
 (
   id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -29,12 +16,20 @@ CREATE TABLE users
   company_id    INTEGER                 NOT NULL,
   password      VARCHAR(255)            NOT NULL,
   registered    TIMESTAMP DEFAULT now() NOT NULL,
-  enabled       BOOLEAN DEFAULT TRUE    NOT NULL,
-  FOREIGN KEY (company_id) REFERENCES companies (id)
-  ON DELETE CASCADE
+  enabled       BOOLEAN DEFAULT TRUE    NOT NULL
 );
 CREATE UNIQUE INDEX users_unique_email_idx
   ON users (email);
+
+CREATE TABLE companies
+(
+  id         INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+  name       VARCHAR(255)            NOT NULL,
+  email      VARCHAR(255),
+  address    VARCHAR(255)
+);
+CREATE UNIQUE INDEX companies_unique_email_idx
+  ON companies (email);
 
 CREATE TABLE user_roles
 (

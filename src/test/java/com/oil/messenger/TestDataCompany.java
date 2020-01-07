@@ -32,9 +32,9 @@ public class TestDataCompany {
     private static final boolean ENABLED_3 = true;
     public static final String ADDRESS_3 = "company_3_address";
 
-    public static final Company COMPANY_1 = new Company(NAME_1, EMAIL_1, PASSWORD_1, REGISTERED_1, ENABLED_1, ADDRESS_1);
-    public static final Company COMPANY_2 = new Company(NAME_2, EMAIL_2, PASSWORD_2, REGISTERED_2, ENABLED_2, ADDRESS_2);
-    public static final Company COMPANY_3 = new Company(NAME_3, EMAIL_3, PASSWORD_3, REGISTERED_3, ENABLED_3, ADDRESS_3);
+    public static final Company COMPANY_1 = new Company(NAME_1, EMAIL_1, ADDRESS_1);
+    public static final Company COMPANY_2 = new Company(NAME_2, EMAIL_2, ADDRESS_2);
+    public static final Company COMPANY_3 = new Company(NAME_3, EMAIL_3, ADDRESS_3);
 
     public static List<Company> getCompanies() {
         final List<Company> list = new ArrayList<>();
