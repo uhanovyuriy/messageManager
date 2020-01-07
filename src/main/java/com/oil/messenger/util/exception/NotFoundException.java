@@ -1,4 +1,4 @@
-package com.oil.messenger.util;
+package com.oil.messenger.util.exception;
 
 public class NotFoundException extends RuntimeException {
 
